@@ -1,0 +1,108 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Nie je to nejako extra esteticky napísaný kód, ale nechcelo sa mi s tým výrazne babra». Ak tam chcete dosadi» svoje dáta, tak iba vymeòte vstupný dataset.
+
+Ako prvý preventívne spú¹»am tidyverse:
+```{r}
+library(tidyverse)
+```
+
+Teraz si naimportujem dátové súbory a nejako ich dám dokopy (robené iba pre moje údaje - tie sú na Githube):
+```{r}
+library(readr)
+Data214 <- read_delim("https://raw.githubusercontent.com/patrick-mydla/radiacna-fyzika/master/data/214.txt", 
+    "\t", escape_double = FALSE, col_names = FALSE, 
+    trim_ws = TRUE)
+Data218 <- read_delim("https://raw.githubusercontent.com/patrick-mydla/radiacna-fyzika/master/data/218.txt", 
+    "\t", escape_double = FALSE, col_names = FALSE, 
+    trim_ws = TRUE)
+colnames(Data214) <- c("y", "f", "a", "b", "c", "h", "Q", "empty")
+colnames(Data218) <- c("y", "f", "a", "b", "c", "h", "Q", "empty")
+Data214 <- as_tibble(Data214)
+Data218 <- as_tibble(Data218)
+```
+
+Vypoèítam èleny, ktoré pôjdu ako sèitatele do "integrálu": 
+```{r}
+Data214 <- (mutate(Data214, x = Q * y * f * 3.624374))
+Data218 <- (mutate(Data218, x = Q * y * f * 3.624374))
+Data214 <- (mutate(Data214, norma = y * f * 3.624374))
+Data218 <- (mutate(Data218, norma = y * f * 3.624374))
+```
+
+Rozdelím si datasety na podskupiny podµa h:
+```{r}
+Data214_10 <- filter(Data214, h == 10)
+Data214_15 <- filter(Data214, h == 15)
+Data214_20 <- filter(Data214, h == 20)
+Data214_25 <- filter(Data214, h == 25)
+Data214_30 <- filter(Data214, h == 30)
+Data214_35 <- filter(Data214, h == 35)
+Data214_40 <- filter(Data214, h == 40)
+Data214_45 <- filter(Data214, h == 45)
+Data214_50 <- filter(Data214, h == 50)
+Data218_10 <- filter(Data218, h == 10)
+Data218_15 <- filter(Data218, h == 15)
+Data218_20 <- filter(Data218, h == 20)
+Data218_25 <- filter(Data218, h == 25)
+Data218_30 <- filter(Data218, h == 30)
+Data218_35 <- filter(Data218, h == 35)
+Data218_40 <- filter(Data218, h == 40)
+Data218_45 <- filter(Data218, h == 45)
+Data218_50 <- filter(Data218, h == 50)
+```
+
+Vypoèítam èitateµa a menovateµa jednotlivých Q_h:
+```{r}
+x214_10 <- sum(Data214_10$x)
+x214_15 <- sum(Data214_15$x)
+x214_20 <- sum(Data214_20$x)
+x214_25 <- sum(Data214_25$x)
+x214_30 <- sum(Data214_30$x)
+x214_35 <- sum(Data214_35$x)
+x214_40 <- sum(Data214_40$x)
+x214_45 <- sum(Data214_45$x)
+x214_50 <- sum(Data214_50$x)
+x218_10 <- sum(Data218_10$x)
+x218_15 <- sum(Data218_15$x)
+x218_20 <- sum(Data218_20$x)
+x218_25 <- sum(Data218_25$x)
+x218_30 <- sum(Data218_30$x)
+x218_35 <- sum(Data218_35$x)
+x218_40 <- sum(Data218_40$x)
+x218_45 <- sum(Data218_45$x)
+x218_50 <- sum(Data218_50$x)
+norma214_10 <- sum(Data214_10$norma)
+norma214_15 <- sum(Data214_15$norma)
+norma214_20 <- sum(Data214_20$norma)
+norma214_25 <- sum(Data214_25$norma)
+norma214_30 <- sum(Data214_30$norma)
+norma214_35 <- sum(Data214_35$norma)
+norma214_40 <- sum(Data214_40$norma)
+norma214_45 <- sum(Data214_45$norma)
+norma214_50 <- sum(Data214_50$norma)
+norma218_10 <- sum(Data218_10$norma)
+norma218_15 <- sum(Data218_15$norma)
+norma218_20 <- sum(Data218_20$norma)
+norma218_25 <- sum(Data218_25$norma)
+norma218_30 <- sum(Data218_30$norma)
+norma218_35 <- sum(Data218_35$norma)
+norma218_40 <- sum(Data218_40$norma)
+norma218_45 <- sum(Data218_45$norma)
+norma218_50 <- sum(Data218_50$norma)
+```
+
+Dám ich do tabuµky a zostrojím grafy (tie tie¾ nie sú estetické, ale natrez to staèí :-) ):
+```{r}
+Q_214 <- tibble (h = c(10, 15, 20, 25, 30, 35, 40, 45, 50), Q = c(x214_10/norma214_10, x214_15/norma214_15, x214_20/norma214_20, x214_25/norma214_25, x214_30/norma214_30, x214_35/norma214_35, x214_40/norma214_40, x214_45/norma214_45, x214_50/norma214_50))
+Q_218 <- tibble (h = c(10, 15, 20, 25, 30, 35, 40, 45, 50), Q = c(x218_10/norma218_10, x218_15/norma218_15, x218_20/norma218_20, x218_25/norma218_25, x218_30/norma218_30, x218_35/norma218_35, x218_40/norma218_40, x218_45/norma218_45, x218_50/norma218_50))
+```
+
+```{r}
+ggplot (data = Q_214, aes(x = h, y = Q)) + geom_line() + geom_point()
+ggplot (data = Q_218, aes(x = h, y = Q)) + geom_line() + geom_point()
+```
+
