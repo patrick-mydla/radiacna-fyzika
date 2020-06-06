@@ -19,8 +19,8 @@ Data214 <- read_delim("https://raw.githubusercontent.com/patrick-mydla/radiacna-
 Data218 <- read_delim("https://raw.githubusercontent.com/patrick-mydla/radiacna-fyzika/master/data/218.txt", 
     "\t", escape_double = FALSE, col_names = FALSE, 
     trim_ws = TRUE)
-colnames(Data214) <- c("y", "f", "a", "b", "c", "h", "Q", "empty")
-colnames(Data218) <- c("y", "f", "a", "b", "c", "h", "Q", "empty")
+colnames(Data214) <- c("y", "f", "h", "i", "Q")
+colnames(Data218) <- c("y", "f", "h", "i", "Q")
 Data214 <- as_tibble(Data214)
 Data218 <- as_tibble(Data218)
 ```
@@ -95,7 +95,7 @@ norma218_45 <- sum(Data218_45$norma)
 norma218_50 <- sum(Data218_50$norma)
 ```
 
-Dám ich do tabuľky a zostrojím grafy (tie tiež nie sú estetické, ale natrez to stačí :-) ):
+Dám ich do tabuľky a zostrojím grafy (tie tiež nie sú estetické, ale nateraz to stačí :-) ):
 ```{r}
 Q_214 <- tibble (h = c(10, 15, 20, 25, 30, 35, 40, 45, 50), Q = c(x214_10/norma214_10, x214_15/norma214_15, x214_20/norma214_20, x214_25/norma214_25, x214_30/norma214_30, x214_35/norma214_35, x214_40/norma214_40, x214_45/norma214_45, x214_50/norma214_50))
 Q_218 <- tibble (h = c(10, 15, 20, 25, 30, 35, 40, 45, 50), Q = c(x218_10/norma218_10, x218_15/norma218_15, x218_20/norma218_20, x218_25/norma218_25, x218_30/norma218_30, x218_35/norma218_35, x218_40/norma218_40, x218_45/norma218_45, x218_50/norma218_50))
@@ -105,4 +105,10 @@ Q_218 <- tibble (h = c(10, 15, 20, 25, 30, 35, 40, 45, 50), Q = c(x218_10/norma2
 ggplot (data = Q_214, aes(x = h, y = Q)) + geom_line() + geom_point()
 ggplot (data = Q_218, aes(x = h, y = Q)) + geom_line() + geom_point()
 ```
+
+Ideme na druhé, dávam krok pre p1 0,05
+```{r}
+Data_mix <- tibble(h = Data214$h, y = Data214$y, f_214 = Data214$f, f)
+```
+
 
