@@ -3,14 +3,14 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-Nie je to nejako extra esteticky napísanı kód, ale nechcelo sa mi s tım vırazne babra». Ak tam chcete dosadi» svoje dáta, tak iba vymeòte vstupnı dataset.
+Nie je to nejako extra esteticky napÃ­sanÃ½ kÃ³d, ale nechcelo sa mi s tÃ½m vÃ½razne babraÅ¥. Ak tam chcete dosadiÅ¥ svoje dÃ¡ta, tak iba vymeÅˆte vstupnÃ½ dataset.
 
-Ako prvı preventívne spú¹»am tidyverse:
+Ako prvÃ½ preventÃ­vne spÃºÅ¡Å¥am tidyverse:
 ```{r}
 library(tidyverse)
 ```
 
-Teraz si naimportujem dátové súbory a nejako ich dám dokopy (robené iba pre moje údaje - tie sú na Githube):
+Teraz si naimportujem dÃ¡tovÃ© sÃºbory a nejako ich dÃ¡m dokopy (robenÃ© iba pre moje Ãºdaje - tie sÃº na Githube):
 ```{r}
 library(readr)
 Data214 <- read_delim("https://raw.githubusercontent.com/patrick-mydla/radiacna-fyzika/master/data/214.txt", 
@@ -25,7 +25,7 @@ Data214 <- as_tibble(Data214)
 Data218 <- as_tibble(Data218)
 ```
 
-Vypoèítam èleny, ktoré pôjdu ako sèitatele do "integrálu": 
+VypoÄÃ­tam Äleny, ktorÃ© pÃ´jdu ako sÄitatele do "integrÃ¡lu": 
 ```{r}
 Data214 <- (mutate(Data214, x = Q * y * f * 3.624374))
 Data218 <- (mutate(Data218, x = Q * y * f * 3.624374))
@@ -33,7 +33,7 @@ Data214 <- (mutate(Data214, norma = y * f * 3.624374))
 Data218 <- (mutate(Data218, norma = y * f * 3.624374))
 ```
 
-Rozdelím si datasety na podskupiny podµa h:
+RozdelÃ­m si datasety na podskupiny podÄ¾a h:
 ```{r}
 Data214_10 <- filter(Data214, h == 10)
 Data214_15 <- filter(Data214, h == 15)
@@ -55,7 +55,7 @@ Data218_45 <- filter(Data218, h == 45)
 Data218_50 <- filter(Data218, h == 50)
 ```
 
-Vypoèítam èitateµa a menovateµa jednotlivıch Q_h:
+VypoÄÃ­tam ÄitateÄ¾a a menovateÄ¾a jednotlivÃ½ch Q_h:
 ```{r}
 x214_10 <- sum(Data214_10$x)
 x214_15 <- sum(Data214_15$x)
@@ -95,7 +95,7 @@ norma218_45 <- sum(Data218_45$norma)
 norma218_50 <- sum(Data218_50$norma)
 ```
 
-Dám ich do tabuµky a zostrojím grafy (tie tie¾ nie sú estetické, ale natrez to staèí :-) ):
+DÃ¡m ich do tabuÄ¾ky a zostrojÃ­m grafy (tie tieÅ¾ nie sÃº estetickÃ©, ale natrez to staÄÃ­ :-) ):
 ```{r}
 Q_214 <- tibble (h = c(10, 15, 20, 25, 30, 35, 40, 45, 50), Q = c(x214_10/norma214_10, x214_15/norma214_15, x214_20/norma214_20, x214_25/norma214_25, x214_30/norma214_30, x214_35/norma214_35, x214_40/norma214_40, x214_45/norma214_45, x214_50/norma214_50))
 Q_218 <- tibble (h = c(10, 15, 20, 25, 30, 35, 40, 45, 50), Q = c(x218_10/norma218_10, x218_15/norma218_15, x218_20/norma218_20, x218_25/norma218_25, x218_30/norma218_30, x218_35/norma218_35, x218_40/norma218_40, x218_45/norma218_45, x218_50/norma218_50))
