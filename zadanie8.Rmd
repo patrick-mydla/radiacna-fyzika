@@ -102,8 +102,8 @@ Q_218 <- tibble (h = c(10, 15, 20, 25, 30, 35, 40, 45, 50), Q = c(x218_10/norma2
 ```
 
 ```{r}
-ggplot (data = Q_214, aes(x = h, y = Q)) + geom_line() + geom_point()
-ggplot (data = Q_218, aes(x = h, y = Q)) + geom_line() + geom_point()
+ggplot (data = Q_214, aes(x = h, y = Q)) + geom_line() + geom_point() + labs(x = "h [μm]", y = "Q1",  title = "Závislosť Q1 od h pre Po 214")
+ggplot (data = Q_218, aes(x = h, y = Q)) + geom_line() + geom_point() + labs(x = "h [μm]", y = "Q2",  title = "Závislosť Q2 od h pre Po 218")
 ```
 
 Ideme na druhé, dávam krok pre p1 0,05.
@@ -125,7 +125,7 @@ Q_p <- tibble(p1 = c(0.00, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45,
 
 A môžeme ísť na graf:
 ```{r}
-ggplot (data = Q_p, aes(x = p1, y = Q)) + geom_line() + geom_point()
+ggplot (data = Q_p, aes(x = p1, y = Q)) + geom_line() + geom_point() + labs(x = "p1", y = "Q",  title = "Závislosť Q od frakcie p1 (podiel Po 214 v zmesi žiaričov)")
 ```
 
 Ešte skúsim spraviť druhú úlohu so vzorcom, kde pridám od oboch integrálov y.
