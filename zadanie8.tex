@@ -1,0 +1,363 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={R Notebook},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{R Notebook}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{}
+    \preauthor{}\postauthor{}
+    \date{}
+    \predate{}\postdate{}
+  
+
+\begin{document}
+\maketitle
+
+Autor: Patrick Mydla Koeficient: 8
+
+Vopred sa ospravedlňujem, že kód nie je nejako esteticky napísaný, ale
+robil som to iba na funkčnosť a veľa času mi zabrala príprava zdrojových
+súborov. Nejaký prvotný algoritmus sme zostrojili spoločne celý krúžok,
+ale tento kód je mojím dielom (akurát Daniel mi pomohol s jedným
+krokom). Je vyrobený iba na zdrojové súbory pre môj koeficient (ale pri
+nahradení súboru bude fungovať aj pre ostatné) . Takže tu je samotný kód
+môjho výpočtového programu:
+
+Ako prvý spúšťam tidyverse:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
+\end{verbatim}
+
+\begin{verbatim}
+## v ggplot2 3.2.1     v purrr   0.3.3
+## v tibble  2.1.3     v dplyr   0.8.3
+## v tidyr   1.0.0     v stringr 1.4.0
+## v readr   1.3.1     v forcats 0.4.0
+\end{verbatim}
+
+\begin{verbatim}
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+\end{verbatim}
+
+Teraz si naimportujem dátové súbory a prerobím tabuľku do použiteľného
+tidyverse formátu (robené iba pre moje údaje - tie sú na Githube):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(readr)}
+\NormalTok{Data214 <-}\StringTok{ }\KeywordTok{read_delim}\NormalTok{(}\StringTok{"https://raw.githubusercontent.com/patrick-mydla/radiacna-fyzika/master/data/214.txt"}\NormalTok{, }
+    \StringTok{"}\CharTok{\textbackslash{}t}\StringTok{"}\NormalTok{, }\DataTypeTok{escape_double =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{col_names =} \OtherTok{FALSE}\NormalTok{, }
+    \DataTypeTok{trim_ws =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   X1 = col_double(),
+##   X2 = col_double(),
+##   X3 = col_double(),
+##   X4 = col_double(),
+##   X5 = col_double()
+## )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Data218 <-}\StringTok{ }\KeywordTok{read_delim}\NormalTok{(}\StringTok{"https://raw.githubusercontent.com/patrick-mydla/radiacna-fyzika/master/data/218.txt"}\NormalTok{, }
+    \StringTok{"}\CharTok{\textbackslash{}t}\StringTok{"}\NormalTok{, }\DataTypeTok{escape_double =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{col_names =} \OtherTok{FALSE}\NormalTok{, }
+    \DataTypeTok{trim_ws =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   X1 = col_double(),
+##   X2 = col_double(),
+##   X3 = col_double(),
+##   X4 = col_double(),
+##   X5 = col_double()
+## )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{colnames}\NormalTok{(Data214) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"y"}\NormalTok{, }\StringTok{"f"}\NormalTok{, }\StringTok{"h"}\NormalTok{, }\StringTok{"i"}\NormalTok{, }\StringTok{"Q"}\NormalTok{)}
+\KeywordTok{colnames}\NormalTok{(Data218) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"y"}\NormalTok{, }\StringTok{"f"}\NormalTok{, }\StringTok{"h"}\NormalTok{, }\StringTok{"i"}\NormalTok{, }\StringTok{"Q"}\NormalTok{)}
+\NormalTok{Data214 <-}\StringTok{ }\KeywordTok{as_tibble}\NormalTok{(Data214)}
+\NormalTok{Data218 <-}\StringTok{ }\KeywordTok{as_tibble}\NormalTok{(Data218)}
+\end{Highlighting}
+\end{Shaded}
+
+Nakoľko sa jedná o numerické integrovanie, integrály budeme považovať za
+sumy (zjednoduší to prácu). Hodnoty pre horný okraj intervalu budeme
+považovať za hodnoty v danom intervale.
+
+Vypočítam členy, ktoré pôjdu ako sčitatele do ``integrálu'':
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Data214 <-}\StringTok{ }\NormalTok{(}\KeywordTok{mutate}\NormalTok{(Data214, }\DataTypeTok{x =}\NormalTok{ Q }\OperatorTok{*}\StringTok{ }\NormalTok{y }\OperatorTok{*}\StringTok{ }\NormalTok{f }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{))}
+\NormalTok{Data218 <-}\StringTok{ }\NormalTok{(}\KeywordTok{mutate}\NormalTok{(Data218, }\DataTypeTok{x =}\NormalTok{ Q }\OperatorTok{*}\StringTok{ }\NormalTok{y }\OperatorTok{*}\StringTok{ }\NormalTok{f }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{))}
+\NormalTok{Data214 <-}\StringTok{ }\NormalTok{(}\KeywordTok{mutate}\NormalTok{(Data214, }\DataTypeTok{norma =}\NormalTok{ y }\OperatorTok{*}\StringTok{ }\NormalTok{f }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{))}
+\NormalTok{Data218 <-}\StringTok{ }\NormalTok{(}\KeywordTok{mutate}\NormalTok{(Data218, }\DataTypeTok{norma =}\NormalTok{ y }\OperatorTok{*}\StringTok{ }\NormalTok{f }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+Rozdelím si datasety na podskupiny podľa h:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Data214_}\DecValTok{10}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data214, h }\OperatorTok{==}\StringTok{ }\DecValTok{10}\NormalTok{)}
+\NormalTok{Data214_}\DecValTok{15}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data214, h }\OperatorTok{==}\StringTok{ }\DecValTok{15}\NormalTok{)}
+\NormalTok{Data214_}\DecValTok{20}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data214, h }\OperatorTok{==}\StringTok{ }\DecValTok{20}\NormalTok{)}
+\NormalTok{Data214_}\DecValTok{25}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data214, h }\OperatorTok{==}\StringTok{ }\DecValTok{25}\NormalTok{)}
+\NormalTok{Data214_}\DecValTok{30}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data214, h }\OperatorTok{==}\StringTok{ }\DecValTok{30}\NormalTok{)}
+\NormalTok{Data214_}\DecValTok{35}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data214, h }\OperatorTok{==}\StringTok{ }\DecValTok{35}\NormalTok{)}
+\NormalTok{Data214_}\DecValTok{40}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data214, h }\OperatorTok{==}\StringTok{ }\DecValTok{40}\NormalTok{)}
+\NormalTok{Data214_}\DecValTok{45}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data214, h }\OperatorTok{==}\StringTok{ }\DecValTok{45}\NormalTok{)}
+\NormalTok{Data214_}\DecValTok{50}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data214, h }\OperatorTok{==}\StringTok{ }\DecValTok{50}\NormalTok{)}
+\NormalTok{Data218_}\DecValTok{10}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data218, h }\OperatorTok{==}\StringTok{ }\DecValTok{10}\NormalTok{)}
+\NormalTok{Data218_}\DecValTok{15}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data218, h }\OperatorTok{==}\StringTok{ }\DecValTok{15}\NormalTok{)}
+\NormalTok{Data218_}\DecValTok{20}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data218, h }\OperatorTok{==}\StringTok{ }\DecValTok{20}\NormalTok{)}
+\NormalTok{Data218_}\DecValTok{25}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data218, h }\OperatorTok{==}\StringTok{ }\DecValTok{25}\NormalTok{)}
+\NormalTok{Data218_}\DecValTok{30}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data218, h }\OperatorTok{==}\StringTok{ }\DecValTok{30}\NormalTok{)}
+\NormalTok{Data218_}\DecValTok{35}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data218, h }\OperatorTok{==}\StringTok{ }\DecValTok{35}\NormalTok{)}
+\NormalTok{Data218_}\DecValTok{40}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data218, h }\OperatorTok{==}\StringTok{ }\DecValTok{40}\NormalTok{)}
+\NormalTok{Data218_}\DecValTok{45}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data218, h }\OperatorTok{==}\StringTok{ }\DecValTok{45}\NormalTok{)}
+\NormalTok{Data218_}\DecValTok{50}\NormalTok{ <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(Data218, h }\OperatorTok{==}\StringTok{ }\DecValTok{50}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Vypočítam čitateľa a menovateľa jednotlivých Q\_h:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x214_}\DecValTok{10}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{10}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x214_}\DecValTok{15}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{15}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x214_}\DecValTok{20}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{20}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x214_}\DecValTok{25}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{25}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x214_}\DecValTok{30}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{30}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x214_}\DecValTok{35}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{35}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x214_}\DecValTok{40}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{40}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x214_}\DecValTok{45}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{45}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x214_}\DecValTok{50}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{50}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x218_}\DecValTok{10}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{10}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x218_}\DecValTok{15}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{15}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x218_}\DecValTok{20}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{20}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x218_}\DecValTok{25}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{25}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x218_}\DecValTok{30}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{30}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x218_}\DecValTok{35}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{35}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x218_}\DecValTok{40}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{40}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x218_}\DecValTok{45}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{45}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{x218_}\DecValTok{50}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{50}\OperatorTok{$}\NormalTok{x)}
+\NormalTok{norma214_}\DecValTok{10}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{10}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma214_}\DecValTok{15}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{15}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma214_}\DecValTok{20}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{20}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma214_}\DecValTok{25}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{25}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma214_}\DecValTok{30}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{30}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma214_}\DecValTok{35}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{35}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma214_}\DecValTok{40}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{40}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma214_}\DecValTok{45}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{45}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma214_}\DecValTok{50}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data214_}\DecValTok{50}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma218_}\DecValTok{10}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{10}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma218_}\DecValTok{15}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{15}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma218_}\DecValTok{20}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{20}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma218_}\DecValTok{25}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{25}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma218_}\DecValTok{30}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{30}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma218_}\DecValTok{35}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{35}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma218_}\DecValTok{40}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{40}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma218_}\DecValTok{45}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{45}\OperatorTok{$}\NormalTok{norma)}
+\NormalTok{norma218_}\DecValTok{50}\NormalTok{ <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(Data218_}\DecValTok{50}\OperatorTok{$}\NormalTok{norma)}
+\end{Highlighting}
+\end{Shaded}
+
+Dám ich do tabuľky a zostrojím grafy (grafy neprešli estetickou
+úpravou):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Q_}\DecValTok{214}\NormalTok{ <-}\StringTok{ }\KeywordTok{tibble}\NormalTok{ (}\DataTypeTok{h =} \KeywordTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{15}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{25}\NormalTok{, }\DecValTok{30}\NormalTok{, }\DecValTok{35}\NormalTok{, }\DecValTok{40}\NormalTok{, }\DecValTok{45}\NormalTok{, }\DecValTok{50}\NormalTok{), }\DataTypeTok{Q =} \KeywordTok{c}\NormalTok{(x214_}\DecValTok{10}\OperatorTok{/}\NormalTok{norma214_}\DecValTok{10}\NormalTok{, x214_}\DecValTok{15}\OperatorTok{/}\NormalTok{norma214_}\DecValTok{15}\NormalTok{, x214_}\DecValTok{20}\OperatorTok{/}\NormalTok{norma214_}\DecValTok{20}\NormalTok{, x214_}\DecValTok{25}\OperatorTok{/}\NormalTok{norma214_}\DecValTok{25}\NormalTok{, x214_}\DecValTok{30}\OperatorTok{/}\NormalTok{norma214_}\DecValTok{30}\NormalTok{, x214_}\DecValTok{35}\OperatorTok{/}\NormalTok{norma214_}\DecValTok{35}\NormalTok{, x214_}\DecValTok{40}\OperatorTok{/}\NormalTok{norma214_}\DecValTok{40}\NormalTok{, x214_}\DecValTok{45}\OperatorTok{/}\NormalTok{norma214_}\DecValTok{45}\NormalTok{, x214_}\DecValTok{50}\OperatorTok{/}\NormalTok{norma214_}\DecValTok{50}\NormalTok{))}
+\NormalTok{Q_}\DecValTok{218}\NormalTok{ <-}\StringTok{ }\KeywordTok{tibble}\NormalTok{ (}\DataTypeTok{h =} \KeywordTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{15}\NormalTok{, }\DecValTok{20}\NormalTok{, }\DecValTok{25}\NormalTok{, }\DecValTok{30}\NormalTok{, }\DecValTok{35}\NormalTok{, }\DecValTok{40}\NormalTok{, }\DecValTok{45}\NormalTok{, }\DecValTok{50}\NormalTok{), }\DataTypeTok{Q =} \KeywordTok{c}\NormalTok{(x218_}\DecValTok{10}\OperatorTok{/}\NormalTok{norma218_}\DecValTok{10}\NormalTok{, x218_}\DecValTok{15}\OperatorTok{/}\NormalTok{norma218_}\DecValTok{15}\NormalTok{, x218_}\DecValTok{20}\OperatorTok{/}\NormalTok{norma218_}\DecValTok{20}\NormalTok{, x218_}\DecValTok{25}\OperatorTok{/}\NormalTok{norma218_}\DecValTok{25}\NormalTok{, x218_}\DecValTok{30}\OperatorTok{/}\NormalTok{norma218_}\DecValTok{30}\NormalTok{, x218_}\DecValTok{35}\OperatorTok{/}\NormalTok{norma218_}\DecValTok{35}\NormalTok{, x218_}\DecValTok{40}\OperatorTok{/}\NormalTok{norma218_}\DecValTok{40}\NormalTok{, x218_}\DecValTok{45}\OperatorTok{/}\NormalTok{norma218_}\DecValTok{45}\NormalTok{, x218_}\DecValTok{50}\OperatorTok{/}\NormalTok{norma218_}\DecValTok{50}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{ (}\DataTypeTok{data =}\NormalTok{ Q_}\DecValTok{214}\NormalTok{, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ h, }\DataTypeTok{y =}\NormalTok{ Q)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \StringTok{"h [μm]"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Q1"}\NormalTok{,  }\DataTypeTok{title =} \StringTok{"Závislosť Q1 od h pre Po 214"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{zadanie8_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{ (}\DataTypeTok{data =}\NormalTok{ Q_}\DecValTok{218}\NormalTok{, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ h, }\DataTypeTok{y =}\NormalTok{ Q)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \StringTok{"h [μm]"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Q2"}\NormalTok{,  }\DataTypeTok{title =} \StringTok{"Závislosť Q2 od h pre Po 218"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{zadanie8_files/figure-latex/unnamed-chunk-7-2.pdf}
+
+Ideme na druhé, dávam krok pre p1 0,05. Časom som prišiel na trochu
+jednoduchší algortimus, preto je odlišný ako v prvej úlohe.
+
+Najpr si urobím novú tabuľku s hodnotami, s ktorými budeme pracovať
+teraz:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Data_mix <-}\StringTok{ }\KeywordTok{tibble}\NormalTok{(}\DataTypeTok{h =}\NormalTok{ Data214}\OperatorTok{$}\NormalTok{h, }\DataTypeTok{y =}\NormalTok{ Data214}\OperatorTok{$}\NormalTok{y, }\DataTypeTok{Q =}\NormalTok{ Data214}\OperatorTok{$}\NormalTok{Q, }\DataTypeTok{f_214 =}\NormalTok{ Data214}\OperatorTok{$}\NormalTok{f, }\DataTypeTok{f_218 =}\NormalTok{ Data218}\OperatorTok{$}\NormalTok{f)}
+\end{Highlighting}
+\end{Shaded}
+
+Teraz opäť vypočítam členy ``integrálu'' - pre každú hodnotu p1
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Data_mix <-}\StringTok{ }\KeywordTok{mutate}\NormalTok{(Data_mix, }\DataTypeTok{x_0.00 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.00} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.00}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.00 =}\NormalTok{ (((}\FloatTok{0.00} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.00}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.05 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.05} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.05}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.05 =}\NormalTok{ (((}\FloatTok{0.05} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.05}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.10 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.10} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.10}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.10 =}\NormalTok{ (((}\FloatTok{0.10} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.10}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.15 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.15} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.15}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.15 =}\NormalTok{ (((}\FloatTok{0.15} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.15}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.20 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.20} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.20}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.20 =}\NormalTok{ (((}\FloatTok{0.20} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.20}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.25 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.25} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.25}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.25 =}\NormalTok{ (((}\FloatTok{0.25} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.25}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.30 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.30} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.30}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.30 =}\NormalTok{ (((}\FloatTok{0.30} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.30}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.35 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.35} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.35}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.35 =}\NormalTok{ (((}\FloatTok{0.35} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.35}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.40 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.40} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.40}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.40 =}\NormalTok{ (((}\FloatTok{0.40} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.40}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.45 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.45} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.45}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.45 =}\NormalTok{ (((}\FloatTok{0.45} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.45}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.50 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.50} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.50}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.50 =}\NormalTok{ (((}\FloatTok{0.50} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.50}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.55 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.55} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.55}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.55 =}\NormalTok{ (((}\FloatTok{0.55} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.55}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.60 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.60} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.60}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.60 =}\NormalTok{ (((}\FloatTok{0.60} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.60}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.65 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.65} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.65}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.65 =}\NormalTok{ (((}\FloatTok{0.65} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.65}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.70 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.70} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.70}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.70 =}\NormalTok{ (((}\FloatTok{0.70} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.70}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.75 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.75} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.75}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.75 =}\NormalTok{ (((}\FloatTok{0.75} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.75}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.80 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.80} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.80}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.80 =}\NormalTok{ (((}\FloatTok{0.80} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.80}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.85 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.85} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.85}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.85 =}\NormalTok{ (((}\FloatTok{0.85} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.85}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.90 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.90} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.90}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.90 =}\NormalTok{ (((}\FloatTok{0.90} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.90}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_0.95 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{0.95} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.95}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_0.95 =}\NormalTok{ (((}\FloatTok{0.95} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-0.95}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{x_1.00 =}\NormalTok{ (Q }\OperatorTok{*}\StringTok{ }\NormalTok{((}\FloatTok{1.00} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-1.00}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{), }\DataTypeTok{norma_1.00 =}\NormalTok{ (((}\FloatTok{1.00} \OperatorTok{*}\StringTok{ }\NormalTok{f_}\DecValTok{214}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{((}\DecValTok{1}\FloatTok{-1.00}\NormalTok{)}\OperatorTok{*}\NormalTok{f_}\DecValTok{218}\NormalTok{)) }\OperatorTok{*}\StringTok{ }\FloatTok{3.624374}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+Keďže sme integrál aproximovali sumou, výrazne to zjednodušilo výpočet -
+stačilo sčítať stĺpce
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Q_p <-}\StringTok{ }\KeywordTok{tibble}\NormalTok{(}\DataTypeTok{p1 =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.00}\NormalTok{, }\FloatTok{0.05}\NormalTok{, }\FloatTok{0.10}\NormalTok{, }\FloatTok{0.15}\NormalTok{, }\FloatTok{0.20}\NormalTok{, }\FloatTok{0.25}\NormalTok{, }\FloatTok{0.30}\NormalTok{, }\FloatTok{0.35}\NormalTok{, }\FloatTok{0.40}\NormalTok{, }\FloatTok{0.45}\NormalTok{, }\FloatTok{0.50}\NormalTok{, }\FloatTok{0.55}\NormalTok{, }\FloatTok{0.60}\NormalTok{, }\FloatTok{0.65}\NormalTok{, }\FloatTok{0.70}\NormalTok{, }\FloatTok{0.75}\NormalTok{, }\FloatTok{0.80}\NormalTok{, }\FloatTok{0.85}\NormalTok{, }\FloatTok{0.90}\NormalTok{, }\FloatTok{0.95}\NormalTok{, }\FloatTok{1.00}\NormalTok{), }\DataTypeTok{Q =} \KeywordTok{c}\NormalTok{(}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.00}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.00}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.05}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.05}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.10}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.10}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.15}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.15}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.20}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.20}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.25}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.25}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.30}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.30}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.35}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.35}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.40}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.40}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.45}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.45}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.50}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.50}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.55}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.55}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.60}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.60}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.65}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.65}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.70}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.70}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.75}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.75}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.80}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.80}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.85}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.85}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.90}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.90}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{0.95}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{0.95}\NormalTok{), }\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{x_}\FloatTok{1.00}\NormalTok{)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(Data_mix}\OperatorTok{$}\NormalTok{norma_}\FloatTok{1.00}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+Na základe tohto sme už mohli generovať graf:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{ (}\DataTypeTok{data =}\NormalTok{ Q_p, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ p1, }\DataTypeTok{y =}\NormalTok{ Q)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \StringTok{"p1"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Q"}\NormalTok{,  }\DataTypeTok{title =} \StringTok{"Závislosť Q od frakcie p1 (podiel Po 214 v zmesi žiaričov)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{zadanie8_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+
+\end{document}

@@ -1,16 +1,25 @@
 ---
 title: "R Notebook"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
+  html_notebook: default
+  pdf_document: default
 ---
+Autor: Patrick Mydla
 
-Nie je to nejako extra esteticky napísaný kód, ale nechcelo sa mi s tým výrazne babrať. Ak tam chcete dosadiť svoje dáta, tak iba vymeňte vstupný dataset.
+Koeficient: 8
 
-Ako prvý preventívne spúšťam tidyverse:
+Vopred sa ospravedlňujem, že kód nie je nejako esteticky napísaný, ale robil som to iba na funkčnosť a veľa času mi zabrala príprava zdrojových súborov. Nejaký prvotný algoritmus sme zostrojili spoločne celý krúžok, ale tento kód je mojím dielom (akurát Daniel mi pomohol s jedným krokom). Je vyrobený iba na zdrojové súbory pre môj koeficient (ale pri nahradení súboru bude fungovať aj pre ostatné).
+
+Takže tu je samotný kód môjho výpočtového programu:
+
+Ako prvý spúšťam tidyverse:
 ```{r}
 library(tidyverse)
 ```
 
-Teraz si naimportujem dátové súbory a nejako ich dám dokopy (robené iba pre moje údaje - tie sú na Githube):
+Teraz si naimportujem dátové súbory a prerobím tabuľku do použiteľného tidyverse formátu (robené iba pre moje údaje - tie sú na Githube):
 ```{r}
 library(readr)
 Data214 <- read_delim("https://raw.githubusercontent.com/patrick-mydla/radiacna-fyzika/master/data/214.txt", 
@@ -24,6 +33,8 @@ colnames(Data218) <- c("y", "f", "h", "i", "Q")
 Data214 <- as_tibble(Data214)
 Data218 <- as_tibble(Data218)
 ```
+
+Nakoľko sa jedná o numerické integrovanie, integrály budeme považovať za sumy (zjednoduší to prácu). Hodnoty pre horný okraj intervalu budeme považovať za hodnoty v danom intervale.
 
 Vypočítam členy, ktoré pôjdu ako sčitatele do "integrálu": 
 ```{r}
@@ -95,7 +106,7 @@ norma218_45 <- sum(Data218_45$norma)
 norma218_50 <- sum(Data218_50$norma)
 ```
 
-Dám ich do tabuľky a zostrojím grafy (tie tiež nie sú estetické, ale nateraz to stačí :-) ):
+Dám ich do tabuľky a zostrojím grafy (grafy neprešli estetickou úpravou):
 ```{r}
 Q_214 <- tibble (h = c(10, 15, 20, 25, 30, 35, 40, 45, 50), Q = c(x214_10/norma214_10, x214_15/norma214_15, x214_20/norma214_20, x214_25/norma214_25, x214_30/norma214_30, x214_35/norma214_35, x214_40/norma214_40, x214_45/norma214_45, x214_50/norma214_50))
 Q_218 <- tibble (h = c(10, 15, 20, 25, 30, 35, 40, 45, 50), Q = c(x218_10/norma218_10, x218_15/norma218_15, x218_20/norma218_20, x218_25/norma218_25, x218_30/norma218_30, x218_35/norma218_35, x218_40/norma218_40, x218_45/norma218_45, x218_50/norma218_50))
@@ -106,7 +117,7 @@ ggplot (data = Q_214, aes(x = h, y = Q)) + geom_line() + geom_point() + labs(x =
 ggplot (data = Q_218, aes(x = h, y = Q)) + geom_line() + geom_point() + labs(x = "h [μm]", y = "Q2",  title = "Závislosť Q2 od h pre Po 218")
 ```
 
-Ideme na druhé, dávam krok pre p1 0,05.
+Ideme na druhé, dávam krok pre p1 0,05. Časom som prišiel na trochu jednoduchší algortimus, preto je odlišný ako v prvej úlohe.
 
 Najpr si urobím novú tabuľku s hodnotami, s ktorými budeme pracovať teraz:
 ```{r}
@@ -118,29 +129,14 @@ Teraz opäť vypočítam členy "integrálu" - pre každú hodnotu p1
 Data_mix <- mutate(Data_mix, x_0.00 = (Q * ((0.00 * f_214) + ((1-0.00)*f_218)) * 3.624374), norma_0.00 = (((0.00 * f_214) + ((1-0.00)*f_218)) * 3.624374), x_0.05 = (Q * ((0.05 * f_214) + ((1-0.05)*f_218)) * 3.624374), norma_0.05 = (((0.05 * f_214) + ((1-0.05)*f_218)) * 3.624374), x_0.10 = (Q * ((0.10 * f_214) + ((1-0.10)*f_218)) * 3.624374), norma_0.10 = (((0.10 * f_214) + ((1-0.10)*f_218)) * 3.624374), x_0.15 = (Q * ((0.15 * f_214) + ((1-0.15)*f_218)) * 3.624374), norma_0.15 = (((0.15 * f_214) + ((1-0.15)*f_218)) * 3.624374), x_0.20 = (Q * ((0.20 * f_214) + ((1-0.20)*f_218)) * 3.624374), norma_0.20 = (((0.20 * f_214) + ((1-0.20)*f_218)) * 3.624374), x_0.25 = (Q * ((0.25 * f_214) + ((1-0.25)*f_218)) * 3.624374), norma_0.25 = (((0.25 * f_214) + ((1-0.25)*f_218)) * 3.624374), x_0.30 = (Q * ((0.30 * f_214) + ((1-0.30)*f_218)) * 3.624374), norma_0.30 = (((0.30 * f_214) + ((1-0.30)*f_218)) * 3.624374), x_0.35 = (Q * ((0.35 * f_214) + ((1-0.35)*f_218)) * 3.624374), norma_0.35 = (((0.35 * f_214) + ((1-0.35)*f_218)) * 3.624374), x_0.40 = (Q * ((0.40 * f_214) + ((1-0.40)*f_218)) * 3.624374), norma_0.40 = (((0.40 * f_214) + ((1-0.40)*f_218)) * 3.624374), x_0.45 = (Q * ((0.45 * f_214) + ((1-0.45)*f_218)) * 3.624374), norma_0.45 = (((0.45 * f_214) + ((1-0.45)*f_218)) * 3.624374), x_0.50 = (Q * ((0.50 * f_214) + ((1-0.50)*f_218)) * 3.624374), norma_0.50 = (((0.50 * f_214) + ((1-0.50)*f_218)) * 3.624374), x_0.55 = (Q * ((0.55 * f_214) + ((1-0.55)*f_218)) * 3.624374), norma_0.55 = (((0.55 * f_214) + ((1-0.55)*f_218)) * 3.624374), x_0.60 = (Q * ((0.60 * f_214) + ((1-0.60)*f_218)) * 3.624374), norma_0.60 = (((0.60 * f_214) + ((1-0.60)*f_218)) * 3.624374), x_0.65 = (Q * ((0.65 * f_214) + ((1-0.65)*f_218)) * 3.624374), norma_0.65 = (((0.65 * f_214) + ((1-0.65)*f_218)) * 3.624374), x_0.70 = (Q * ((0.70 * f_214) + ((1-0.70)*f_218)) * 3.624374), norma_0.70 = (((0.70 * f_214) + ((1-0.70)*f_218)) * 3.624374), x_0.75 = (Q * ((0.75 * f_214) + ((1-0.75)*f_218)) * 3.624374), norma_0.75 = (((0.75 * f_214) + ((1-0.75)*f_218)) * 3.624374), x_0.80 = (Q * ((0.80 * f_214) + ((1-0.80)*f_218)) * 3.624374), norma_0.80 = (((0.80 * f_214) + ((1-0.80)*f_218)) * 3.624374), x_0.85 = (Q * ((0.85 * f_214) + ((1-0.85)*f_218)) * 3.624374), norma_0.85 = (((0.85 * f_214) + ((1-0.85)*f_218)) * 3.624374), x_0.90 = (Q * ((0.90 * f_214) + ((1-0.90)*f_218)) * 3.624374), norma_0.90 = (((0.90 * f_214) + ((1-0.90)*f_218)) * 3.624374), x_0.95 = (Q * ((0.95 * f_214) + ((1-0.95)*f_218)) * 3.624374), norma_0.95 = (((0.95 * f_214) + ((1-0.95)*f_218)) * 3.624374), x_1.00 = (Q * ((1.00 * f_214) + ((1-1.00)*f_218)) * 3.624374), norma_1.00 = (((1.00 * f_214) + ((1-1.00)*f_218)) * 3.624374))
 ```
 
-Uvedomil som si, že teraz môžem aplikovať "lifehack" a jednoducho zosumovať stĺpce :-)
+Keďže sme integrál aproximovali sumou, výrazne to zjednodušilo výpočet - stačilo sčítať stĺpce
 ```{r}
 Q_p <- tibble(p1 = c(0.00, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00), Q = c(sum(Data_mix$x_0.00)/sum(Data_mix$norma_0.00), sum(Data_mix$x_0.05)/sum(Data_mix$norma_0.05), sum(Data_mix$x_0.10)/sum(Data_mix$norma_0.10), sum(Data_mix$x_0.15)/sum(Data_mix$norma_0.15), sum(Data_mix$x_0.20)/sum(Data_mix$norma_0.20), sum(Data_mix$x_0.25)/sum(Data_mix$norma_0.25), sum(Data_mix$x_0.30)/sum(Data_mix$norma_0.30), sum(Data_mix$x_0.35)/sum(Data_mix$norma_0.35), sum(Data_mix$x_0.40)/sum(Data_mix$norma_0.40), sum(Data_mix$x_0.45)/sum(Data_mix$norma_0.45), sum(Data_mix$x_0.50)/sum(Data_mix$norma_0.50), sum(Data_mix$x_0.55)/sum(Data_mix$norma_0.55), sum(Data_mix$x_0.60)/sum(Data_mix$norma_0.60), sum(Data_mix$x_0.65)/sum(Data_mix$norma_0.65), sum(Data_mix$x_0.70)/sum(Data_mix$norma_0.70), sum(Data_mix$x_0.75)/sum(Data_mix$norma_0.75), sum(Data_mix$x_0.80)/sum(Data_mix$norma_0.80), sum(Data_mix$x_0.85)/sum(Data_mix$norma_0.85), sum(Data_mix$x_0.90)/sum(Data_mix$norma_0.90), sum(Data_mix$x_0.95)/sum(Data_mix$norma_0.95), sum(Data_mix$x_1.00)/sum(Data_mix$norma_1.00)))
 ```
 
-A môžeme ísť na graf:
+Na základe tohto sme už mohli generovať graf:
 ```{r}
 ggplot (data = Q_p, aes(x = p1, y = Q)) + geom_line() + geom_point() + labs(x = "p1", y = "Q",  title = "Závislosť Q od frakcie p1 (podiel Po 214 v zmesi žiaričov)")
 ```
 
-Ešte skúsim spraviť druhú úlohu so vzorcom, kde pridám od oboch integrálov y.
-```{r}
-Data_mix_y <- Data_mix
-```
-
-```{r}
-Data_mix_y <- mutate(Data_mix_y, x_y_0.00 = (Q * y * ((0.00 * f_214) + ((1-0.00)*f_218)) * 3.624374), norma_y_0.00 = (((0.00 * f_214) + ((1-0.00)*f_218)) * 3.624374 * y), x_y_0.05 = (Q * y * ((0.05 * f_214) + ((1-0.05)*f_218)) * 3.624374), norma_y_0.05 = (((0.05 * f_214) + ((1-0.05)*f_218)) * 3.624374 * y), x_y_0.10 = (Q * y * ((0.10 * f_214) + ((1-0.10)*f_218)) * 3.624374), norma_y_0.10 = (((0.10 * f_214) + ((1-0.10)*f_218)) * 3.624374 * y), x_y_0.15 = (Q * y * ((0.15 * f_214) + ((1-0.15)*f_218)) * 3.624374), norma_y_0.15 = (((0.15 * f_214) + ((1-0.15)*f_218)) * 3.624374 * y), x_y_0.20 = (Q * y * ((0.20 * f_214) + ((1-0.20)*f_218)) * 3.624374), norma_y_0.20 = (((0.20 * f_214) + ((1-0.20)*f_218)) * 3.624374 * y), x_y_0.25 = (Q * y * ((0.25 * f_214) + ((1-0.25)*f_218)) * 3.624374), norma_y_0.25 = (((0.25 * f_214) + ((1-0.25)*f_218)) * 3.624374 * y), x_y_0.30 = (Q * y * ((0.30 * f_214) + ((1-0.30)*f_218)) * 3.624374), norma_y_0.30 = (((0.30 * f_214) + ((1-0.30)*f_218)) * 3.624374 * y), x_y_0.35 = (Q * y * ((0.35 * f_214) + ((1-0.35)*f_218)) * 3.624374), norma_y_0.35 = (((0.35 * f_214) + ((1-0.35)*f_218)) * 3.624374 * y), x_y_0.40 = (Q * y * ((0.40 * f_214) + ((1-0.40)*f_218)) * 3.624374), norma_y_0.40 = (((0.40 * f_214) + ((1-0.40)*f_218)) * 3.624374 * y), x_y_0.45 = (Q * y * ((0.45 * f_214) + ((1-0.45)*f_218)) * 3.624374), norma_y_0.45 = (((0.45 * f_214) + ((1-0.45)*f_218)) * 3.624374 * y), x_y_0.50 = (Q * y * ((0.50 * f_214) + ((1-0.50)*f_218)) * 3.624374), norma_y_0.50 = (((0.50 * f_214) + ((1-0.50)*f_218)) * 3.624374 * y), x_y_0.55 = (Q * y * ((0.55 * f_214) + ((1-0.55)*f_218)) * 3.624374), norma_y_0.55 = (((0.55 * f_214) + ((1-0.55)*f_218)) * 3.624374 * y), x_y_0.60 = (Q * y * ((0.60 * f_214) + ((1-0.60)*f_218)) * 3.624374), norma_y_0.60 = (((0.60 * f_214) + ((1-0.60)*f_218)) * 3.624374 * y), x_y_0.65 = (Q * y * ((0.65 * f_214) + ((1-0.65)*f_218)) * 3.624374), norma_y_0.65 = (((0.65 * f_214) + ((1-0.65)*f_218)) * 3.624374 * y), x_y_0.70 = (Q * y * ((0.70 * f_214) + ((1-0.70)*f_218)) * 3.624374), norma_y_0.70 = (((0.70 * f_214) + ((1-0.70)*f_218)) * 3.624374 * y), x_y_0.75 = (Q * y * ((0.75 * f_214) + ((1-0.75)*f_218)) * 3.624374), norma_y_0.75 = (((0.75 * f_214) + ((1-0.75)*f_218)) * 3.624374 * y), x_y_0.80 = (Q * y * ((0.80 * f_214) + ((1-0.80)*f_218)) * 3.624374), norma_y_0.80 = (((0.80 * f_214) + ((1-0.80)*f_218)) * 3.624374 * y), x_y_0.85 = (Q * y * ((0.85 * f_214) + ((1-0.85)*f_218)) * 3.624374), norma_y_0.85 = (((0.85 * f_214) + ((1-0.85)*f_218)) * 3.624374 * y), x_y_0.90 = (Q * y * ((0.90 * f_214) + ((1-0.90)*f_218)) * 3.624374), norma_y_0.90 = (((0.90 * f_214) + ((1-0.90)*f_218)) * 3.624374 * y), x_y_0.95 = (Q * y * ((0.95 * f_214) + ((1-0.95)*f_218)) * 3.624374), norma_y_0.95 = (((0.95 * f_214) + ((1-0.95)*f_218)) * 3.624374 * y), x_y_1.00 = (Q * y * ((1.00 * f_214) + ((1-1.00)*f_218)) * 3.624374), norma_y_1.00 = (((1.00 * f_214) + ((1-1.00)*f_218)) * 3.624374 * y))
-```
-
-```{r}
-Q_p_y <- tibble(p1 = c(0.00, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00), Q = c(sum(Data_mix_y$x_y_0.00)/sum(Data_mix_y$norma_y_0.00), sum(Data_mix_y$x_y_0.05)/sum(Data_mix_y$norma_y_0.05), sum(Data_mix_y$x_y_0.10)/sum(Data_mix_y$norma_y_0.10), sum(Data_mix_y$x_y_0.15)/sum(Data_mix_y$norma_y_0.15), sum(Data_mix_y$x_y_0.20)/sum(Data_mix_y$norma_y_0.20), sum(Data_mix_y$x_y_0.25)/sum(Data_mix_y$norma_y_0.25), sum(Data_mix_y$x_y_0.30)/sum(Data_mix_y$norma_y_0.30), sum(Data_mix_y$x_y_0.35)/sum(Data_mix_y$norma_y_0.35), sum(Data_mix_y$x_y_0.40)/sum(Data_mix_y$norma_y_0.40), sum(Data_mix_y$x_y_0.45)/sum(Data_mix_y$norma_y_0.45), sum(Data_mix_y$x_y_0.50)/sum(Data_mix_y$norma_y_0.50), sum(Data_mix_y$x_y_0.55)/sum(Data_mix_y$norma_y_0.55), sum(Data_mix_y$x_y_0.60)/sum(Data_mix_y$norma_y_0.60), sum(Data_mix_y$x_y_0.65)/sum(Data_mix_y$norma_y_0.65), sum(Data_mix_y$x_y_0.70)/sum(Data_mix_y$norma_y_0.70), sum(Data_mix_y$x_y_0.75)/sum(Data_mix_y$norma_y_0.75), sum(Data_mix_y$x_y_0.80)/sum(Data_mix_y$norma_y_0.80), sum(Data_mix_y$x_y_0.85)/sum(Data_mix_y$norma_y_0.85), sum(Data_mix_y$x_y_0.90)/sum(Data_mix_y$norma_y_0.90), sum(Data_mix_y$x_y_0.95)/sum(Data_mix_y$norma_y_0.95), sum(Data_mix_y$x_y_1.00)/sum(Data_mix_y$norma_y_1.00)))
-```
-
-```{r}
-ggplot (data = Q_p_y, aes(x = p1, y = Q)) + geom_line() + geom_point()
-```
+Zdrojové súbory a surový kód nájdete v mojom Github priečinku: https://github.com/patrick-mydla/radiacna-fyzika
